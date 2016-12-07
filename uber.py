@@ -8,17 +8,17 @@ import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 
-df = pd.read_csv('../assets/datasets/titanic.csv')
-include = ['Pclass', 'Sex', 'Age', 'Fare', 'SibSp', 'Survived']
+# # df = pd.read_csv('../assets/datasets/titanic.csv')
+# include = ['Pclass', 'Sex', 'Age', 'Fare', 'SibSp', 'Survived']
 
-# Create dummies and drop NaNs
-df['Sex'] = df['Sex'].apply(lambda x: 0 if x == 'male' else 1)
-df = df[include].dropna()
+# # Create dummies and drop NaNs
+# df['Sex'] = df['Sex'].apply(lambda x: 0 if x == 'male' else 1)
+# df = df[include].dropna()
 
-X = df[['Pclass', 'Sex', 'Age', 'Fare', 'SibSp']]
-y = df['Survived']
+# X = df[['Pclass', 'Sex', 'Age', 'Fare', 'SibSp']]
+# y = df['Survived']
 
-PREDICTOR = RandomForestClassifier(n_estimators=100).fit(X, y)
+# PREDICTOR = RandomForestClassifier(n_estimators=100).fit(X, y)
 
 #-------- ROUTES GO HERE -----------#
 @app.route('/', methods=['GET', 'POST'])
@@ -28,8 +28,6 @@ def index():
         latitude = request.form['latitude']
         weather = request.form['weather']
         return predict(pclass, sex, age, fare, sibsp)
-    elif request.method == "GET":
-
     return render_template('index.html')
 
 @app.route('/predict', methods=["GET"])
