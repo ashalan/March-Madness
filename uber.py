@@ -6,35 +6,32 @@ app = Flask(__name__)
 #-------- MODEL GOES HERE -----------#
 import numpy as np
 import pandas as pd
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
+import pickle
 
-# # df = pd.read_csv('../assets/datasets/titanic.csv')
-# include = ['Pclass', 'Sex', 'Age', 'Fare', 'SibSp', 'Survived']
-
-# # Create dummies and drop NaNs
-# df['Sex'] = df['Sex'].apply(lambda x: 0 if x == 'male' else 1)
-# df = df[include].dropna()
-
-# X = df[['Pclass', 'Sex', 'Age', 'Fare', 'SibSp']]
-# y = df['Survived']
-
-# PREDICTOR = RandomForestClassifier(n_estimators=100).fit(X, y)
+# load the model from disk
+uber_PREDICTOR = pickle.load(open('uber.pkl', 'rb'))
+lyft_PREDICTOR = pickle.load(open('lyft.pkl', 'rb'))
 
 #-------- ROUTES GO HERE -----------#
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == "POST":
-        longitude = request.form['location']
-        latitude = request.form['latitude']
-        weather = request.form['weather']
+        Humidity = request.form['Humidity']
+        Prec = request.form['Prec']
+        Temp = request.form['Temp']
+        hour = request.form['hour']
+        month = request.form['month']
+        day = request.form['day']
         return predict(pclass, sex, age, fare, sibsp)
     return render_template('index.html')
 
 @app.route('/predict', methods=["GET"])
-def predict(longitude, lattitude, weather):
-    item = [longitude, lattitude, weather]
-    score = PREDICTOR.predict_proba(item)
-    results = {'survival chances': score[0,1], 'death chances': score[0,0]}
+def predict(Humidity, Prec, Temp, hour, month, day):
+    item = [Humidity, Prec, Temp, hour, month, day]
+    uber = uber_PREDICTOR.predict(item)
+    lyft = lyft_PREDICTOR.predict(item)
+    results = {'Uber': uber, 'Lyft': lyft}
     return jsonify(results)
 
 if __name__ == '__main__':
