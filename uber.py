@@ -29,8 +29,8 @@ def index():
 @app.route('/predict', methods=["GET"])
 def predict(Humidity, Prec, Temp, hour, month, day):
     item = [Humidity, Prec, Temp, hour, month, day]
-    uber = uber_PREDICTOR.predict(item)
-    lyft = lyft_PREDICTOR.predict(item)
+    uber = uber_PREDICTOR.predict(item)[0]
+    lyft = lyft_PREDICTOR.predict(item)[0]
     results = {'Uber': uber, 'Lyft': lyft}
     return jsonify(results)
 
