@@ -23,7 +23,7 @@ def index():
         hour = request.form['hour']
         month = request.form['month']
         day = request.form['day']
-        return predict(pclass, sex, age, fare, sibsp)
+        return predict(Humidity, Prec, Temp, hour, month, day)
     return render_template('index.html')
 
 @app.route('/predict', methods=["GET"])
