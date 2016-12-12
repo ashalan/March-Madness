@@ -1,23 +1,44 @@
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type=text/javascript>
+  $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+</script>
+<script type=text/javascript>
+  $(function() {
+    $('button#calculate').bind('click', function() {
+      $.getJSON($SCRIPT_ROOT + '/prediction', {
+        year: $('input[name="year"]').val(),
+        team1: $('input[name="team1"]').val(),
+        team2: $('input[name="team2"]').val()
+      }, function(data) {
+        $("#result").text(data.result);
+      });
+      return false;
+    });
+  });
+</script>
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Unsurge</title>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='layout.css') }}">
+    <title>March Madness</title>
   </head>
   <body>
-    <div class="container">
-      <h1>Which taxi service should I use?</h1>
-      <form role="form" method='POST' action='/'>
+    <div class="container" id="page-wrapper">
+      <h1>March Madness Predictor</h1>
+      <h2>Who is going to win?</h2>
+      <form role="form" method='POST' action='/' autocomplete="on">
         <div class="form-group">
-          <input type="text" name="Humidity" placeholder="What is the Humidity?" required>
-          <input type="text" name="Prec" placeholder="What is the Prec?" required>
-          <input type="text" name="Temp" placeholder="What is the Temp?" required>
-          <input type="text" name="hour" placeholder="What is the hour?" required>
-          <input type="text" name="month" placeholder="What is the month?" required>
-          <input type="text" name="day" placeholder="What is the day?" required>
+          <input type="text" name="year" placeholder="What is the year?" required>
+          <input type="text" class="team1" id="ajax" list="json-datalist" name="team1" placeholder="Who is team1?" required>
+          <datalist id="json-datalist"></datalist>
+          <input type="text" class="team2" id="ajax" list="json-datalist" name="team2" placeholder="Who is team2?" required>
+          <datalist id="json-datalist"></datalist>
         </div>
-        <button type="submit" class="btn btn-default">Submit</button>
+        <button type="submit" class="btn btn-default" href=# id=calculate>Submit</button>
+        <div id=result>.........</div>
       </form>
-      <br>
     </div>
+    <span style="color: white; text-align: center;">Amer Shalan 2016</span>
+  <script src="{{url_for('static', filename='script.js')}}"></script>
   </body>
 </html>
