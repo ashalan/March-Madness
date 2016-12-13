@@ -10,7 +10,17 @@
         team1: $('input[name="team1"]').val(),
         team2: $('input[name="team2"]').val()
       }, function(data) {
-        $("#result").text(data.result);
+        $("#result").text(data.winner);
+        if (data.warning1) {
+          $("#warning1").text(data.warning1);
+        } else {
+          $( "#warning1" ).empty();
+        }
+        if (data.warning2) {
+          $("#warning2").text(data.warning2);
+        } else {
+          $( "#warning2" ).empty();
+        }
       });
       return false;
     });
@@ -35,8 +45,11 @@
           <datalist id="json-datalist"></datalist>
         </div>
         <button type="submit" class="btn btn-default" href=# id=calculate>Submit</button>
+        <div class="warning" id=warning1></div>
+        <div class="warning" id=warning2></div>
         <div id=result>.........</div>
       </form>
+      <div>For info on how this was created, refer to <a href="https://github.com/ashalan/GA-DSI/blob/master/projects/projects-capstone/March%20Madness.ipynb">my project on Github.</a></div>
     </div>
     <div style="color: white; text-align: right; width: 640px; margin: 1em auto;">Amer Shalan 2016</div>
   <script src="{{url_for('static', filename='script.js')}}"></script>
